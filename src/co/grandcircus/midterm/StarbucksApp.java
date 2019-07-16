@@ -9,28 +9,28 @@ public class StarbucksApp extends Menu {
 	
 	public static void main(String[] args) {
 		
-		System.out.println("☕️☕️☕️☕️☕️ Welcome to the Grand Circus StarSucks! ☕️☕️☕️☕️☕️\n");
+		System.out.println("- - - -  Welcome to the Grand Circus StarSucks! - - - - ️\n");
 		printMenu();
 	}
 	private static void printMenu() {
 		
 		ArrayList<Menu> menu = new ArrayList<>();
-		menu.add(new Drinks("☕️ Espresso ", 1.95));
-		menu.add(new Drinks("☕️ White Chocolate Mocha Frappucino Blended Coffee", 3.95));
-		menu.add(new Drinks("☕️ Caffe Latte ", 3.25));
-		menu.add(new Drinks("☕️ Pike Place ", 1.95));
-		menu.add(new Drinks("🍵 Mint Majesty Herbal Tea ", 2.25));
-		menu.add(new Drinks("🍵 Matcha Green Tea Latte ", 2.60));
-		menu.add(new Drinks("🍵 Earl Grey Black Tea ", 2.75));
-		menu.add(new Drinks("🍵 Chai Latte ", 3.75));
-		menu.add(new Food("🥪 Double Smoked-Bacon, Cheddar & Egg Breakfast Sandwich ", 4.95));
-		menu.add(new Food("🥪 Crispy Grill Cheese Sandwich ", 5.95));
-		menu.add(new Food("🥪 Baja Black Bean Veggie Wrap ", 5.45));
-		menu.add(new Food("🥪 Chicken Caprese Sandwich ", 5.45));
-		menu.add(new Food("🍰 Blueberry Muffin ", 2.45));
-		menu.add(new Food("🍰 Birthday Cake Pop ", 1.95));
-		menu.add(new Food("🍰 Iced Lemon Loaf Cake ", 2.95));
-		menu.add(new Food("🍰 Banana Nut Bread ", 2.95));
+		menu.add(new Drinks("Espresso ", 1.95));
+		menu.add(new Drinks("White Chocolate Mocha Frappucino Blended Coffee", 3.95));
+		menu.add(new Drinks("Caffe Latte ", 3.25));
+		menu.add(new Drinks("Pike Place ", 1.95));
+		menu.add(new Drinks("Mint Majesty Herbal Tea ", 2.25));
+		menu.add(new Drinks("Matcha Green Tea Latte ", 2.60));
+		menu.add(new Drinks("Earl Grey Black Tea ", 2.75));
+		menu.add(new Drinks("Chai Latte ", 3.75));
+		menu.add(new Food("Double Smoked-Bacon, Cheddar & Egg Breakfast Sandwich ", 4.95));
+		menu.add(new Food("Crispy Grill Cheese Sandwich ", 5.95));
+		menu.add(new Food("Baja Black Bean Veggie Wrap ", 5.45));
+		menu.add(new Food("Chicken Caprese Sandwich ", 5.45));
+		menu.add(new Food("Blueberry Muffin ", 2.45));
+		menu.add(new Food("Birthday Cake Pop ", 1.95));
+		menu.add(new Food("Iced Lemon Loaf Cake ", 2.95));
+		menu.add(new Food("Banana Nut Bread ", 2.95));
 		
 		for (int i = 0; i < menu.size(); i++) {
 		
