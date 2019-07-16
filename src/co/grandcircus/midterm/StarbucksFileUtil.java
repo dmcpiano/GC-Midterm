@@ -15,9 +15,6 @@ public class StarbucksFileUtil {
       String[] parts = line.split(", ");
       Menu item = new Menu();
       item.setName(parts[0]);
-      item.setCategory(parts[1]);
-      item.setDescription(parts[2]);
-      item.setPrice(Double.parseDouble(parts[3]));
       return item;
    }
 

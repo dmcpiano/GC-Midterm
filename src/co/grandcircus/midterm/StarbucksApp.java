@@ -1,17 +1,17 @@
 package co.grandcircus.midterm;
 import java.util.*;
 
-<<<<<<< HEAD
 public class StarbucksApp{
    private static Scanner scan = new Scanner(System.in);
    
-   public static void main(String[] args){
+   public static void main(String[] args) {
       
       String userContinue = "y";
-      int userChoice;
+      int userChoice = 0;
       Menu choice;
       ArrayList<Menu> order = new ArrayList<>();
       int quantity;
+      
       double subtotal = 0;
       double total;
       String userPay = "";
@@ -23,35 +23,50 @@ public class StarbucksApp{
       String newOrder = "";
       
       do{
-         System.out.println("Welcome to the Grand Circus Starbucks\n");
+         System.out.println("Welcome to the Grand Circus Starbucks!\n");
          do{
             //print Menu
-            System.out.println("Menu: ");
+            System.out.println("- - - Menu - - -\n ");
             List<Menu> menu = StarbucksFileUtil.readFile();
-            for (int i=1; i<menu.size()-1;i++) {
-               System.out.println(i + ") " + menu.get(i).toString());
+            for (int i=0; i<menu.size()-1;i++) {
+            	String item = menu.get(i).toString();
+                System.out.println((i + 1) +") " + item);
             }
+            
             //get choice && quantity
-            System.out.println("\nChoose one of the options through the numbers.");
-            userChoice = scan.nextInt();
-            if(userChoice<menu.size()){
-               choice = getItem(userChoice);
+            System.out.println("\nChoose an item (1- 21).");
+            try { 
+            	userChoice = scan.nextInt();
+            } 
+            catch (InputMismatchException e) {
+            System.out.println("Sorry that's not a valid input. Try again! I know you're hungry...");
+            }
+         
+            if(userChoice<menu.size()-1){
+              
+               
                System.out.println("How many would you like?");
                quantity = scan.nextInt();
+               
                for(int i=0; i<quantity;i++){
-                  order.add(choice);
-                  subtotal+= choice.getPrice();
-               }//end for
-               System.out.println("Subtotal for choice above:" + (choice.getPrice() * quantity));
+            	  double totalCostWithAddOns = 0;
+            	  System.out.println("Item " + (i+1) + ": ");
+            	  getInfo(userChoice, totalCostWithAddOns);
+            	  choice = getItem(userChoice);
+            	  System.out.println("\nSubtotal: $ " + (choice.getPrice() + totalCostWithAddOns));
+               } //end for
+               
+               
             
                System.out.println("\nWould you like to order anything else? (y/n)");
-               userContinue = scan.next();
+            	   userContinue = scan.next();
+            	   userContinue = userContinue.toLowerCase();
             }
             else{
-               System.out.println("Error, choose a valid option.\n");
+               System.out.println("Sorry, that's not a valid option. Please try again! I know you're hungry...\n");
             }
          }//end do
-         while(userContinue.equals("y") || userContinue.equals("Y"));
+         while(userContinue.equals("y"));
          
          System.out.println("Subtotal: " + subtotal);
          System.out.printf("Sales Tax: %.2f", (subtotal*0.06));
@@ -59,21 +74,21 @@ public class StarbucksApp{
          System.out.printf("\nTotal: %.2f\n", (total));
          do{
             System.out.println("\nAre you paying with cash, check, or card?");
-            userPay = scan.next();
+            userPay = scan.nextLine();
          
             if(userPay.equalsIgnoreCase("cash")){
-               System.out.println("Enter amount you are paying with: ");
+               System.out.println("Enter how much cash you're paying with: ");
                userCash = scan.nextDouble();
-               System.out.printf("Here is your change: $%.2f\n", (userCash-total));
+               System.out.printf("Great, and here is your change: $%.2f\n", (userCash-total));
                break;
             }
             else if(userPay.equalsIgnoreCase("check")){
-               System.out.println("Enter the check number: ");
+               System.out.println("Enter your four-digit check number: ");
                checkNumber = scan.nextInt();
                break;
             }
             else if(userPay.equalsIgnoreCase("card")){
-               System.out.println("Enter the card number: ");
+               System.out.println("Enter your twelve-digit card number: ");
                cardNumber = scan.nextInt();
                System.out.println("Enter the card expiration date: ");
                expiration = scan.next();
@@ -84,20 +99,20 @@ public class StarbucksApp{
          }//end do
          while(!userPay.equalsIgnoreCase("cash") || !userPay.equalsIgnoreCase("check") || !userPay.equalsIgnoreCase("card"));
          
-         System.out.println("\nYour order:");
+         System.out.println("\nThanks for your order! You have selected: ");
          for(Menu o: order){
             System.out.println(o.toString());
          }//end for
-         System.out.println("Subtotal: " + subtotal);
+         System.out.println("\nSubtotal: " + subtotal);
          System.out.printf("Sales Tax: %.2f", (subtotal*0.06));
          total = (subtotal*0.06)+subtotal;
          System.out.printf("\nTotal: %.2f\n", (total));
-         System.out.println("\nThank you for your order have a nice day!");
+         System.out.println("\nThank you for visiting Starbucks, have a nice day!");
          
          order.clear();
          
          //if end, stop program
-         System.out.println("\nNew order? (y/n)");
+         System.out.println("\nStart a new order? (y/n)");
          newOrder = scan.next();
          
       }//end do
@@ -113,63 +128,88 @@ public class StarbucksApp{
       catch(IndexOutOfBoundsException e){}
       return item;
    }//end getItem
+   
+   public static double getInfo(int userChoice, double totalCostWithAddOns) {
+	   Scanner scan = new Scanner(System.in);
+	   totalCostWithAddOns = 0;
+	   
+	   if (userChoice >= 1 && userChoice <= 8) {
+		   System.out.println("Hot or iced? ");
+		   String tempChoice = scan.nextLine();
+		   
+		   System.out.println("Would you like to add milk? y/n");
+		   String milkOption = scan.nextLine();
+		   milkOption = milkOption.toLowerCase();
+		   if (milkOption.equals("y")) {
+			   
+			   System.out.println("Choose a milk type from the list below (1-6)\n ");
+			   List <String> milk = new ArrayList<>();
+			   milk.add("Reduced fat 2%");
+			   milk.add("Fat-free");
+			   milk.add("Whole milk");
+			   milk.add("Almond + .60c");
+			   milk.add("Coconut + .60c");
+			   milk.add("Soy + .60c");
+			   
+			   for (int i = 0; i < milk.size(); i++) {
+				   System.out.println((i + 1) + ") " + milk.get(i).toString());
+			   }  
+			   int milkChoice = scan.nextInt(); 
+				   if (milkChoice >= 4 && milkChoice <= 6) {
+					   totalCostWithAddOns += (.60);
+					   
+				   } else if (milkChoice >= 1 && milkChoice <=3) {
+					   totalCostWithAddOns += 0;
+				   } 
+			   } 
+		   else if (milkOption.equals("n")) {
+			 totalCostWithAddOns += 0;
+		   }
+		   System.out.println("Would you like to add any flavors to your drink? y/n");
+		   scan.nextLine();
+		   String flavorChoice = scan.nextLine();
+		   flavorChoice = flavorChoice.toLowerCase();
+		   
+		   if (flavorChoice.equals("y")) {
+			   System.out.println("Choose a flavor from the list below for an additional $0.75. (1-6) ");
+			   ArrayList <String> flavor = new ArrayList<>();
+			   flavor.add("Vanilla");
+			   flavor.add("Hazelnut");
+			   flavor.add("Toffee nut");
+			   flavor.add("Caramel");
+			   flavor.add("Cinnamon dolce");
+			   flavor.add("Peppermint");
+			   flavor.add("Raspberry");
+			   flavor.add("Simple syrup");
+			   
+			   for (int i = 0; i < flavor.size(); i++) {
+				   System.out.println((i + 1) + ") " + flavor.get(i).toString());
+			   } 
+			   int flavorOption = scan.nextInt(); 
+			   totalCostWithAddOns += 0.75;
+		   
+		   } else if (flavorChoice.equals("n")) {
+			   totalCostWithAddOns += 0;
+		   }
+	   } else if (userChoice >= 9 && userChoice <= 12) {
+		   System.out.println("Would you like that toasted? y/n");
+		   String toastedChoice = scan.nextLine();
+		   toastedChoice = toastedChoice.toLowerCase();
+		   
+		   if (toastedChoice.equals("y")) {
+			   
+		   } else if (toastedChoice.equals("n")) {
+			   
+		   }
+	   } else if (userChoice >= 13 && userChoice <= 16) {
+		   System.out.println("Delicious choice! ");
+	   }
+	   
+	   
+	return totalCostWithAddOns;
+   }
+   
 }//end StarbucksApp
-=======
-import java.util.ArrayList;
-import java.util.Scanner;
 
-public class StarbucksApp extends Menu {
-	
-	static Scanner scnr = new Scanner(System.in);
-	
-	public static void main(String[] args) {
-		
-		System.out.println("- - - -  Welcome to the Grand Circus StarSucks! - - - - ️\n");
-		printMenu();
-	}
-	private static void printMenu() {
-		
-		ArrayList<Menu> menu = new ArrayList<>();
-		menu.add(new Drinks("Espresso ", 1.95));
-		menu.add(new Drinks("White Chocolate Mocha Frappucino Blended Coffee", 3.95));
-		menu.add(new Drinks("Caffe Latte ", 3.25));
-		menu.add(new Drinks("Pike Place ", 1.95));
-		menu.add(new Drinks("Mint Majesty Herbal Tea ", 2.25));
-		menu.add(new Drinks("Matcha Green Tea Latte ", 2.60));
-		menu.add(new Drinks("Earl Grey Black Tea ", 2.75));
-		menu.add(new Drinks("Chai Latte ", 3.75));
-		menu.add(new Food("Double Smoked-Bacon, Cheddar & Egg Breakfast Sandwich ", 4.95));
-		menu.add(new Food("Crispy Grill Cheese Sandwich ", 5.95));
-		menu.add(new Food("Baja Black Bean Veggie Wrap ", 5.45));
-		menu.add(new Food("Chicken Caprese Sandwich ", 5.45));
-		menu.add(new Food("Blueberry Muffin ", 2.45));
-		menu.add(new Food("Birthday Cake Pop ", 1.95));
-		menu.add(new Food("Iced Lemon Loaf Cake ", 2.95));
-		menu.add(new Food("Banana Nut Bread ", 2.95));
-		
-		for (int i = 0; i < menu.size(); i++) {
-		
-		if (menu.get(i) instanceof Drinks) {
-			
-			System.out.println(menu.get(i).getItemName() + menu.get(i).getPrice());
-			
-		} else if (menu.get(i) instanceof Food) {
-			System.out.println(menu.get(i).getItemName() + menu.get(i).getPrice());
-		}
-		}
-		
-		System.out.println("\nWhat would you like to order? ");
-		String ItemChoice = scnr.nextLine();
-		
-		//System.out.println("What size? ");
-		//System.out.println("Hot or iced? ");
-		//String tempChoice = scnr.nextLine();
-		//System.out.println("With milk or without? ");
-		//String milkChoice = scnr.nextLine();
-		//System.out.println("Would you like any flavors added to your drink? ");
-		//int pumpChoice = scnr.nextInt();
-		
-	}
 
-}
->>>>>>> 77f4e7dd8884fad6ef3421ac1b84e45891e0de06
+
