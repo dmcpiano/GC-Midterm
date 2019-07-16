@@ -34,6 +34,6 @@ public String getName(){
    }//end getPrice
    
    public String toString(){
-      return String.format("%s, $", name, price);
+      return String.format("%s ", name, price);
    }//end toString
 }//end Menu
