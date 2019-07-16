@@ -1,5 +1,4 @@
 package co.grandcircus.midterm;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,49 +10,38 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+// Copy-paste into your project verbatim
 public class FileLinesHelper {
 
-private Path filePath = Paths.get("starbucks.txt");
-	
-	public FileLinesHelper(Path filePath) {
-		this.filePath = filePath;
-	}
-	
-	public FileLinesHelper(String filePath) {
-		this(Paths.get(filePath));
-	}
-	
-	public List<String> readFile() {
-		try {
-			return Files.readAllLines(filePath);
-		} catch (FileNotFoundException ex) {
-			return new ArrayList<>();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-			return new ArrayList<>();
-		}
-	}
-	
-	public void appendToFile(String line) throws IOException {
-		ensureFileExists();
-		List<String> linesToAdd = Arrays.asList(line);
+   private Path filePath;
 
-		Files.write(filePath, linesToAdd, StandardOpenOption.APPEND);
-	}
-	
-	public void rewriteFile(List<String> lines) throws IOException {
-		ensureFileExists();
-		
-		Files.write(filePath, lines, StandardOpenOption.TRUNCATE_EXISTING);
-	}
-	
-	private void ensureFileExists() throws IOException {
-		if ( Files.notExists(filePath) ) {
-			Files.createFile(filePath);
-		}
-	}
-	
-	public void clearFile() throws IOException {
-		rewriteFile(Collections.emptyList());
-	}
+   public FileLinesHelper(Path filePath) {
+      this.filePath = filePath;
+   }
+
+   public FileLinesHelper(String filePath) {
+      this(Paths.get(filePath));
+   }
+   
+   private void ensureFileExists() throws IOException {
+      if ( Files.notExists(filePath) ) {
+         Files.createFile(filePath);
+      }
+   }
+   
+   public List<String> readFile() {
+      // ** Example of reading a file into a list
+      
+      try {
+         ensureFileExists();
+         return Files.readAllLines(filePath);
+      } catch (FileNotFoundException ex) {
+         return new ArrayList<>();
+      } catch (IOException ex) {
+         ex.printStackTrace();
+         return new ArrayList<>();
+      }
+   }
+   
+   
 }
