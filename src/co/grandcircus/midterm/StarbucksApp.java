@@ -18,44 +18,40 @@ public class StarbucksApp{
       double costOfItem = 0;
       double Extras = 0;
       double cash = 0;
+      double price = 0;
       String expiration;
       String userContinue = "y";
       String choice;
       String userPay = "";
-      String milkChoice = null;
-      String flavorChoice = null;
+      String milkChoice = "no milk";
+      String flavorChoice = "no flavors";
       String tempChoice = null;
       String newOrder = "";
-      String toastedChoice = null;
-      
-      ArrayList<Menu> order = new ArrayList<>();
+      String toastedChoice = "not toasted";
+      List<String> order = new ArrayList<>();
+     
   
    
    do {	  
          System.out.println("Welcome to the Grand Circus Starbucks!\n");
          
          do{
+        	
+        	 
             System.out.println("- - - Menu - - -\n ");
             List<Menu> menu = StarbucksFileUtil.readFile();
-            for (int i=0; i<menu.size()-1;i++) {
+            for (int i=0; i<menu.size();i++) {
             	String item = menu.get(i).toString() + "$" + menu.get(i).getPrice();
                 System.out.println((i + 1) +") " + item);
             }
             
             	System.out.println("\nChoose an item (1- 16).");
             	userChoice = scan.nextInt();
-            	choice = menu.get(userChoice).getName();
-            
-            	double price = menu.get(userChoice).getPrice();
-            	
-            	
-                System.out.println("How many of those would you like? ");
-                quantityChoice = scan.nextInt();
-                
-                for (int i = 0; i < quantityChoice; i++) {
-                costOfItem = price;
-                quantityOfItems += quantityChoice;
-                System.out.println("\nItem " + (i+1) + ": " );
+            	choice = menu.get(userChoice-1).getName();
+            	price = menu.get(userChoice-1).getPrice();
+            	System.out.println(choice);
+                costOfItem += price;
+                System.out.println(costOfItem);
                 scan.nextLine();
                 
                 
@@ -71,11 +67,13 @@ public class StarbucksApp{
          				 Extras += 0.60;
          				 
          			 }  else if (milkOption.equalsIgnoreCase("n")) {
-         				 milkChoice = "No milk";
+         				 milkChoice = "no milk";
          				 Extras += 0;
          				 
          			 }
-      
+         		   costOfItem += Extras;
+         		   System.out.println(costOfItem);
+         		   
     	  System.out.println("Would you like to add any flavors to your drink? y/n");
 		  String flavorOption = scan.nextLine();
 		  if (flavorOption.equalsIgnoreCase("y")) {
@@ -83,10 +81,12 @@ public class StarbucksApp{
 			  Extras += 0.60;
 			  
 		  } else if (flavorOption.equalsIgnoreCase("n")) {
-		  		flavorChoice = "No flavors";
+		  		flavorChoice = "no flavors";
 		  		Extras += 0;
 		  		
 		  }
+		  costOfItem += Extras;
+		  System.out.println(costOfItem);
 		  
        } else if (userChoice >= 9 && userChoice <= 12) {
     	  System.out.println("Would you like that toasted? y/n ");
@@ -105,15 +105,11 @@ public class StarbucksApp{
     	   
        }
        
- } // end for loop
+       double subTotal = costOfItem;
        System.out.println("\nDoes this complete your order? Select (y/n): ");
  	   userContinue = scan.next();
- 	   
- 	   
- 	   
- 	  double costOfItems = costOfItem + Extras;
-	  double subTotal = costOfItems * quantityOfItems;
- 	   
+
+if (userContinue.equalsIgnoreCase("y")) { 	   
 List<String> drinks = new ArrayList<>();
       
       drinks.add("Espresso");
@@ -140,42 +136,44 @@ List<String> bakery = new ArrayList<>();
       bakery.add("Iced Lemon Loaf Cake");
       bakery.add("Banana Nut Bread");
       
+      
+      
  	   if (drinks.contains(choice)) {
- 		  String orderDrinks = (choice + tempChoice + milkChoice + flavorChoice  + price);
- 		  System.out.println(orderDrinks);
+ 		  String orderDrinks = (choice + ", " + tempChoice + ", " + milkChoice + ", " + flavorChoice + ", " + "$" + price + "\n");
+ 		  order.add(orderDrinks);
+ 		  
  	   } else if (sandwiches.contains(choice)) {
- 		   String orderFood = (choice + toastedChoice  + price);
- 		   System.out.println(orderFood);
+ 		   String orderFood = (choice + ", " + toastedChoice + ", " + "$" + price + "\n");
+ 		  order.add(orderFood);
  	   } else if (bakery.contains(choice)) {
- 		   String orderBakedGoods = (choice + price);
- 		   System.out.println(orderBakedGoods);
+ 		   String orderBakedGoods = (choice + ", " + "$" + price + "\n");
+ 		  order.add(orderBakedGoods);
  	   }
- 	   
- 	   if (userContinue.equalsIgnoreCase("y")) {
- 		   
- 		   
- 		   
- 		   System.out.printf("$%.2f" + "Subtotal: " + subTotal);
+ 	   	   for (String o : order) {
+ 	   		   System.out.println(o);
+ 	   	   }
+ 	   	   
+ 		   System.out.println("Subtotal: $" + subTotal);
  		   System.out.printf("Sales Tax: $%.2f", subTotal * .6);
  		   double total = subTotal + (subTotal * .6);
  		   System.out.printf("\nTotal: $%.2f\n", (total));
- 		   
+ 		   scan.nextLine();
  		   System.out.println("\nAre you paying with cash, check, or card?");
-              userPay = scan.nextLine();
+           userPay = scan.nextLine();
            
               if (userPay.equalsIgnoreCase("cash")) {
                  System.out.println("How much cash are you paying with? ");
                  cash = scan.nextDouble();
                  System.out.printf("Great, and here is your change: $%.2f\n", (cash-total));
                  System.out.println("\nThank you for visiting Starbucks, have a nice day!");
-                 order.clear();
+                 
                  break;
                  
               } else if(userPay.equalsIgnoreCase("check")){
                  System.out.println("Enter your four-digit check number: ");
                  checkNumber = scan.nextInt();
                  System.out.println("\nThank you for visiting Starbucks, have a nice day!");
-                 order.clear();
+                 
                  break;
                  
               } else if(userPay.equalsIgnoreCase("card")){
@@ -186,18 +184,17 @@ List<String> bakery = new ArrayList<>();
                  System.out.println("Enter the CVV: ");
                  CVV = scan.nextInt();
                  System.out.println("\nThank you for visiting Starbucks, have a nice day!");
-                 order.clear();
+                 
                  break;
               }
-              
-              
- 	   } // end if
-    
+ } else {
+ }
  } while (userContinue.equalsIgnoreCase("n")); // end do 1/2
     
         
          System.out.println("\nStart a new order? (y/n)");
          newOrder = scan.next();
+         
          
 } while(newOrder.equalsIgnoreCase("y")); // end do 2/2
 }// end main method
