@@ -2,19 +2,24 @@ package co.grandcircus.midterm;
 
 public class Food extends Menu {
 
-	public String toasted;
+	public String ifToasted;
 
-	public Food(String toasted) {
+	public Food() {
 		super();
-		this.toasted = toasted;
 	}
 
-	public String getToasted() {
-		return toasted;
+	public Food(String ifToasted) {
+		super();
+
+		this.ifToasted = ifToasted;
 	}
 
-	public void setToasted(String toasted) {
-		this.toasted = toasted;
+	public String getIfToasted() {
+		return ifToasted;
+	}
+
+	public void setIfToasted(String ifToasted) {
+		this.ifToasted = ifToasted;
 	}
 
 }
