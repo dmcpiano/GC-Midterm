@@ -19,6 +19,7 @@ public class StarbucksApp{
       String userPay = "";
       String milkChoice = null;
       String flavorChoice = null;
+      String tempChoice = null;
       double cash = 0;
       int checkNumber;
       int cardNumber;
@@ -33,7 +34,6 @@ public class StarbucksApp{
          System.out.println("Welcome to the Grand Circus Starbucks!\n");
          
          do{
-            //print Menu
             System.out.println("- - - Menu - - -\n ");
             List<Menu> menu = StarbucksFileUtil.readFile();
             for (int i=0; i<menu.size()-1;i++) {
@@ -41,26 +41,25 @@ public class StarbucksApp{
                 System.out.println((i + 1) +") " + item);
             }
             
-            //get choice
             	System.out.println("\nChoose an item (1- 16).");
             	userChoice = scan.nextInt();
             	choice = menu.get(userChoice).getName();
             	double price = menu.get(userChoice).getPrice();
-            	//System.out.println(choice);
+            	
                 System.out.println("How many of those would you like? ");
                 quantityChoice = scan.nextInt();
+                
+                for (int i = 0; i < quantityChoice; i++) {
+                	
                 costOfItem = price;
                 quantityOfItems += quantityChoice;
-                //System.out.println(quantityOfItems);
-                
-                //System.out.println(costOfItem);
                 scan.nextLine();
                 
        if (userChoice >= 1 && userChoice <= 8) {
          		   
          		   System.out.println("Hot or iced? ");
-         		   String tempChoice = scan.nextLine();
-   
+         		   tempChoice = scan.nextLine();
+         		  
          		   System.out.println("Would you like milk in that? y/n");
          		   String milkOption = scan.nextLine();
          		   if (milkOption.equalsIgnoreCase("y")) {
@@ -68,7 +67,6 @@ public class StarbucksApp{
          				 Extras += 0.60;
          			 }  else if (milkOption.equalsIgnoreCase("n")) {
          				 milkChoice = "No milk";
-         				 System.out.println(milkChoice);
          				 Extras += 0;
          			 }
       
@@ -82,6 +80,7 @@ public class StarbucksApp{
 		  		System.out.println(flavorChoice);
 		  		Extras += 0;
 		  }
+		  
        } else if (userChoice >= 9 && userChoice <= 12) {
     	  System.out.println("Would you like that toasted? y/n ");
     	  String toastedOption = scan.nextLine();
@@ -92,50 +91,70 @@ public class StarbucksApp{
     		  String toastedChoice = "not toasted";
     		  System.out.println(toastedChoice);
     	  }
+    	
+    	  
        } else if (userChoice >= 13 && userChoice <= 16) {
     	   System.out.println("Delicious choice! ");
        }
+       
+       
+ } // end for loop
        System.out.println("\nDoes this complete your order? Select (y/n): ");
  	   userContinue = scan.next();
  	   userContinue = userContinue.toLowerCase();
  	   
+ 	   
+ 	   String orderName = (choice + tempChoice + milkChoice + flavorChoice);
+ 	   System.out.println(orderName);
+ 	   
+ 	   if (userContinue.equalsIgnoreCase("y")) {
+ 		   
+ 		   
+ 		   double costOfItems = costOfItem + Extras;
+ 		   double subTotal = costOfItems * quantityOfItems;
+ 		   System.out.printf("Subtotal:", "$%.2f" + subTotal);
+ 		   System.out.printf("Sales Tax: $%.2f", subTotal * .6);
+ 		   double total = subTotal + (subTotal * .6);
+ 		   System.out.printf("\nTotal: $%.2f\n", (total));
+ 		   
+ 		   System.out.println("\nAre you paying with cash, check, or card?");
+              userPay = scan.nextLine();
+           
+              if (userPay.equalsIgnoreCase("cash")) {
+                 System.out.println("How much cash are you paying with? ");
+                 cash = scan.nextDouble();
+                 System.out.printf("Great, and here is your change: $%.2f\n", (cash-total));
+                 System.out.println("\nThank you for visiting Starbucks, have a nice day!");
+                 order.clear();
+                 break;
+                 
+              } else if(userPay.equalsIgnoreCase("check")){
+                 System.out.println("Enter your four-digit check number: ");
+                 checkNumber = scan.nextInt();
+                 System.out.println("\nThank you for visiting Starbucks, have a nice day!");
+                 order.clear();
+                 break;
+                 
+              } else if(userPay.equalsIgnoreCase("card")){
+                 System.out.println("Enter your twelve-digit card number: ");
+                 cardNumber = scan.nextInt();
+                 System.out.println("Enter the card expiration date: ");
+                 expiration = scan.next();
+                 System.out.println("Enter the CVV: ");
+                 CVV = scan.nextInt();
+                 System.out.println("\nThank you for visiting Starbucks, have a nice day!");
+                 order.clear();
+                 break;
+              }
+              
+              
+ 	   } // end if
+    
  } while (userContinue.equalsIgnoreCase("n")); // end do 1/2
-         
-          /*System.out.println("Subtotal: " + (cost + Extras) * quantityOfItems;
-     	  System.out.printf("Sales Tax: %.2f", ((getInfo(userChoice) + cost) * (quantity)) * 0.06);
-     	  double total = (((getInfo(userChoice) + cost) * quantity) * 0.06) + cost;
-     	  System.out.printf("\nTotal: %.2f\n", (total));
-     	  
-         do{
-             System.out.println("\nAre you paying with cash, check, or card?");
-             userPay = scan.nextLine();
-          
-             if (userPay.equalsIgnoreCase("cash")) {
-                System.out.println("How much cash are you paying with? ");
-                cash = scan.nextDouble();
-                //System.out.printf("Great, and here is your change: $%.2f\n", (cash-total));
-                break;
-                
-             } else if(userPay.equalsIgnoreCase("check")){
-                System.out.println("Enter your four-digit check number: ");
-                checkNumber = scan.nextInt();
-                break;
-                
-             } else if(userPay.equalsIgnoreCase("card")){
-                System.out.println("Enter your twelve-digit card number: ");
-                cardNumber = scan.nextInt();
-                System.out.println("Enter the card expiration date: ");
-                expiration = scan.next();
-                System.out.println("Enter the CVV: ");
-                CVV = scan.nextInt();
-                break;
-             }
-             
-          } while(!userPay.equalsIgnoreCase("cash") || !userPay.equalsIgnoreCase("check") || !userPay.equalsIgnoreCase("card")); //end do
-         System.out.println("\nThank you for visiting Starbucks, have a nice day!");
-         order.clear();
+    
+        
          System.out.println("\nStart a new order? (y/n)");
-         newOrder = scan.next();*/
+         newOrder = scan.next();
          
 } while(newOrder.equalsIgnoreCase("y")); // end do 2/2
 }// end main method
@@ -175,7 +194,7 @@ public class StarbucksApp{
 	   subtotal = money.get(userChoice);
 	   return subtotal;
 }
-
+ 
 public static void getMilkChoice(String milkChoice) {
 	
 			   System.out.println("Choose which kind from the list below: \n ");
