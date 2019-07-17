@@ -1,6 +1,6 @@
 package co.grandcircus.midterm;
 
-public class Drinks {
+public class Drinks extends Menu {
 	
 	public String milkChoice;
 	public String flavorChoice;
