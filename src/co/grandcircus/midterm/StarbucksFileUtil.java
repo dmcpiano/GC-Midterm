@@ -12,9 +12,10 @@ public class StarbucksFileUtil {
 
     //convert a line of text from the file to a new item instance
    private static Menu convertLineToItem(String line) {
-      String[] parts = line.split("$");
+      String[] parts = line.split(", ");
       Menu item = new Menu();
       item.setName(parts[0]);
+      item.setPrice(Double.parseDouble(parts[1]));
       return item;
    }
 

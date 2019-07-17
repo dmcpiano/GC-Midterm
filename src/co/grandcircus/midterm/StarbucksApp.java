@@ -10,9 +10,10 @@ public class StarbucksApp{
       
       String userContinue = "y";
       int userChoice = 0;
-      Menu choice;
-      int quantity = 0;
-      
+      String choice;
+      int quantityChoice = 0;
+      int quantityOfItems = 0;
+      double costOfItem = 0;
       String userPay = "";
       
       double cash = 0;
@@ -24,7 +25,6 @@ public class StarbucksApp{
       String newOrder = "";
       
       ArrayList<Menu> order = new ArrayList<>();
-      ArrayList<Menu> costOfItem = new ArrayList<>();
       
       do{
     	  
@@ -42,31 +42,36 @@ public class StarbucksApp{
             //get choice
             	System.out.println("\nChoose an item (1- 16).");
             	userChoice = scan.nextInt();
-            
-            // get quantity
-            if (userChoice<menu.size()-1) {
-  
-               System.out.println("How many of those would you like? ");
-               quantity = scan.nextInt();
-               scan.nextLine();
-               order.add(getItem(userChoice * quantity));
-               costOfItem.add(getPrice(userChoice * quantity));
-               
-               for(int i=0; i<quantity - 1;i++){
+            	choice = menu.get(userChoice).getName();
+            	double price = menu.get(userChoice).getPrice();
+            	System.out.println(choice);
+                System.out.println("How many of those would you like? ");
+                quantityChoice = scan.nextInt();
+                quantityOfItems += quantityChoice;
+                
+                System.out.println(quantityOfItems);
+                
+                costOfItem = price;
+                
+                System.out.println(costOfItem);
+                scan.nextLine();
+                
+                order.add(getItem(userChoice * quantityChoice));
+                for(int i=0; i<quantityChoice - 1;i++){
             	  
             	  System.out.println("Item " + (i+1) + ": \n");
                   getInfo(userChoice);
    
                } //end for
-            } //end if
            
-	          choice = getItem(userChoice);
+           
 	          
-	      	  double cost = choice.getPrice();
-	      	  System.out.println("Subtotal: " + (getInfo(userChoice) + cost) * quantity);
+	          
+	      	  
+	      	  /*System.out.println("Subtotal: " + (getInfo(userChoice) + cost) * quantity);
 	      	  System.out.printf("Sales Tax: %.2f", ((getInfo(userChoice) + cost) * (quantity)) * 0.06);
 	      	  double total = (((getInfo(userChoice) + cost) * quantity) * 0.06) + cost;
-	      	  System.out.printf("\nTotal: %.2f\n", (total));
+	      	  System.out.printf("\nTotal: %.2f\n", (total));*/
 	      	  
 	          do{
 	              System.out.println("\nAre you paying with cash, check, or card?");
@@ -75,7 +80,7 @@ public class StarbucksApp{
 	              if (userPay.equalsIgnoreCase("cash")) {
 	                 System.out.println("How much cash are you paying with? ");
 	                 cash = scan.nextDouble();
-	                 System.out.printf("Great, and here is your change: $%.2f\n", (cash-total));
+	                 //System.out.printf("Great, and here is your change: $%.2f\n", (cash-total));
 	                 break;
 	                 
 	              } else if(userPay.equalsIgnoreCase("check")){
@@ -129,11 +134,12 @@ public class StarbucksApp{
 }
 
 
-public static Menu getItem(int choice){
+public static Menu getItem(int userChoice){
       List<Menu> menu = StarbucksFileUtil.readFile();
       Menu item = menu.get(menu.size()-1);
       try{
-         item = menu.get(choice);
+         item = menu.get(userChoice);
+        
       }//end try
       catch(IndexOutOfBoundsException e){}
       return item;
