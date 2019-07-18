@@ -22,7 +22,7 @@ public class Validator {
 		return true;
 	}//validateCheck
 	
-	public static boolean validateCard(int cardNumber) {
+	public static boolean validateCard(long cardNumber) {
 		int length = String.valueOf(cardNumber).length();
 		if(length!=12) {
 			return false;

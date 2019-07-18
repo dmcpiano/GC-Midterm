@@ -12,7 +12,7 @@ public class StarbucksApp {
 		boolean breakOut = false;
 		int quantityOfItems = 0;
 		int checkNumber;
-		int cardNumber;
+		long cardNumber;
 		int CVV;
 		double total = 0;
 		double costOfItem = 0;
@@ -99,7 +99,7 @@ public class StarbucksApp {
 						flavorChoice = getFlavorChoice(flavorChoice);
 						costOfItem += 0.60;
 
-					} else {
+					} else if (flavorOption.equalsIgnoreCase("n")){
 						flavorChoice = "no flavors";
 						costOfItem += 0;
 
@@ -137,7 +137,7 @@ public class StarbucksApp {
 				}
 				
 				else { //if didn't choose a valid menu option 
-					System.out.println("Not a valid option");
+					System.out.println("Sorry! That's not a valid option, please select again from the menu. ");
 					breakOut = true;
 				}
 				
@@ -173,28 +173,34 @@ public class StarbucksApp {
 						counter++;
 					}
 					while(counter<quantityOfItems);
+					System.out.println("Here's your order: ");
 					for (String o : order) {
 						System.out.println(o.toString());
 					}
-					System.out.printf("Subtotal: $%.2f\n", subTotal);
-					System.out.printf("Sales Tax: $%.2f", subTotal * .06);
+					System.out.printf("\nSubtotal: $%.2f \n", subTotal);
+					System.out.printf("Sales Tax: $%.2f \n", subTotal * .06);
 					total = subTotal + (subTotal * .06);
+					System.out.printf("Total: $%.2f \n", (total));
+					scan.nextLine();
 					System.out.println("\nDoes this complete your order? Select (y/n): ");
-					userContinue = scan.next();
+					userContinue = scan.nextLine();
 					
 					if (userContinue.equalsIgnoreCase("y")) {
-						for (String o : order) {
-							System.out.println(o);
-						}
-						System.out.printf("\nTotal: $%.2f\n", (total));
-						scan.nextLine();
+						
 						System.out.println("\nAre you paying with cash, check, or card?");
 						userPay = scan.nextLine();
 	
 						if (userPay.equalsIgnoreCase("cash")) {
 							System.out.println("How much cash are you paying with? ");
 							cash = scan.nextDouble();
-							System.out.printf("Great, and here is your change: $%.2f\n", (cash - total));
+							double balance = cash-total;
+							
+							if ((balance) < 0 ) {
+								System.out.printf("Your balance is: $%.2f\n", Math.abs(balance));
+							} else if ((balance) > 0) {
+								System.out.printf("Great, and here is your change: $%.2f\n", (balance));
+							}
+							
 							System.out.println("\nThank you for visiting Starbucks, have a nice day!");
 	
 							break;
@@ -203,6 +209,7 @@ public class StarbucksApp {
 							do {
 								System.out.println("Enter your four-digit check number: ");
 								checkNumber = scan.nextInt();
+								break;
 							}
 							while(!Validator.validateCheck(checkNumber));
 							System.out.println("\nThank you for visiting Starbucks, have a nice day!");
@@ -212,19 +219,20 @@ public class StarbucksApp {
 						} else if (userPay.equalsIgnoreCase("card")) {
 							do {
 								System.out.println("Enter your twelve-digit card number: ");
-								cardNumber = scan.nextInt();
+								cardNumber = scan.nextLong();
+								break;
 							}
 							while(!Validator.validateCard(cardNumber));
-							System.out.println("Enter the card expiration date: ");
+							System.out.println("Enter the card's four-digit expiration date, leaving out the '/': ");
 							expiration = scan.next();
 							do {
 								System.out.println("Enter the CVV: ");
 								CVV = scan.nextInt();
+								break;
 							}
 							while(!Validator.validateCVV(CVV));
 							System.out.println("\nThank you for visiting Starbucks, have a nice day!");
 	
-							break;
 						}
 					} else {
 					}
@@ -235,7 +243,7 @@ public class StarbucksApp {
 			} while (userContinue.equalsIgnoreCase("n")); // end do 1/2
 			
 			System.out.println("\nStart a new order? (y/n)");
-			newOrder = scan.next();
+			 newOrder = scan.next();
 			 userChoice = 0;
 			 breakOut = false;
 			 quantityOfItems = 0;
@@ -270,7 +278,7 @@ public class StarbucksApp {
 		milk.add("Coconut");
 		milk.add("Soy");
 
-		for (int i = 1; i < milk.size(); i++) {
+		for (int i = 0; i < milk.size(); i++) {
 			System.out.println(milk.get(i).toString());
 		}
 		return milkChoice = scan.nextLine();
